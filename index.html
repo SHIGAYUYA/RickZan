@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>リック算</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/marx/2.0.4/marx.css"
+    />
+    <script>
+      const not_rick = 1 - 1 / 6;
+      const getBaseLog = (x, y) => {
+        return Math.log(y) / Math.log(x);
+      };
+
+      const OnButtonClick = () => {
+        const input_times = document.getElementById("input_times").value;
+
+        const numer = document.getElementById("input_numer").value;
+        const denom = document.getElementById("input_denom").value;
+        const base_probability = 1 - numer / denom;
+
+        const result_probability = Math.pow(base_probability, input_times);
+        const result_times = getBaseLog(not_rick, result_probability);
+
+        const terget_probability = document.getElementById(
+          "terget_probability"
+        );
+        terget_probability.innerHTML = result_probability;
+        const terget_times = document.getElementById("terget_times");
+        terget_times.innerHTML = result_times;
+      };
+
+      window.onload = OnButtonClick;
+    </script>
+  </head>
+
+  <body>
+    <main>
+      <h1>リック算</h1>
+      <h2>出る確率</h2>
+      <table>
+        <tr>
+          <td>
+            <input id="input_numer" type="number" value="1" />
+            <hr
+              style="
+                background-color: #000000;
+                border-width: 1px 0 0 0;
+                margin: 5px 0px 5px;
+              "
+            />
+            <input id="input_denom" type="number" value="4" />
+          </td>
+        </tr>
+      </table>
+      <h2>出なかった回数</h2>
+      <input id="input_times" type="number" type="number" value="28" />
+      <button onclick="OnButtonClick();">計算</button>
+      <br />
+      <h2>結果</h2>
+      <h3>起きる確率</h3>
+      <div id="terget_probability"></div>
+      <h3>実質リック数</h3>
+      <div id="terget_times"></div>
+    </main>
+  </body>
+</html>
