@@ -7,28 +7,57 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/marx/2.0.4/marx.css"
     />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.1.0/math.js"
+      integrity="sha512-fV7AgA3aFCdEFQgTcyJrUr5ZAMlRvCOxVIuLyX8Ru20HYFy9B9bOi74i6IsymKw0i9XM9V51aDEbFXqBPG/cKQ=="
+      crossorigin="anonymous"
+    ></script>
     <script>
-      const not_rick = 1 - 1 / 6;
+      math.config({
+        number: "BigNumber",
+        precision: 64,
+      });
+
+      // 1-1/6=5/6
+      const not_rick = math.divide(math.bignumber(5), math.bignumber(6));
       const getBaseLog = (x, y) => {
         return Math.log(y) / Math.log(x);
+      };
+
+      const toPrecisionFixed = (value, precision) => {
+        return math.format(
+          math.bignumber(
+            math.format(value, {
+              precision: precision,
+            })
+          ),
+          { notation: "fixed" }
+        );
       };
 
       const OnButtonClick = () => {
         const input_times = document.getElementById("input_times").value;
 
-        const numer = document.getElementById("input_numer").value;
-        const denom = document.getElementById("input_denom").value;
-        const base_probability = 1 - numer / denom;
+        const numer = math.bignumber(
+          document.getElementById("input_numer").value
+        );
+        const denom = math.bignumber(
+          document.getElementById("input_denom").value
+        );
+        const base_probability = math.subtract(
+          math.bignumber(1),
+          math.divide(numer, denom)
+        );
 
-        const result_probability = Math.pow(base_probability, input_times);
-        const result_times = getBaseLog(not_rick, result_probability);
+        const result_probability = math.pow(base_probability, input_times);
+        const result_times = math.log(result_probability, not_rick);
 
         const terget_probability = document.getElementById(
           "terget_probability"
         );
-        terget_probability.innerHTML = result_probability;
+        terget_probability.innerHTML = toPrecisionFixed(result_probability, 5);
         const terget_times = document.getElementById("terget_times");
-        terget_times.innerHTML = result_times;
+        terget_times.innerHTML = toPrecisionFixed(result_times, 5);
       };
 
       window.onload = OnButtonClick;
