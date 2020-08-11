@@ -2,16 +2,11 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>実質リック計算ツール</title>
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/marx/2.0.4/marx.css"
     />
-
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.1.0/math.js"
       integrity="sha512-fV7AgA3aFCdEFQgTcyJrUr5ZAMlRvCOxVIuLyX8Ru20HYFy9B9bOi74i6IsymKw0i9XM9V51aDEbFXqBPG/cKQ=="
@@ -49,20 +44,27 @@
         const denom = math.bignumber(
           document.getElementById("input_denom").value
         );
-        const base_probability = math.subtract(
-          math.bignumber(1),
-          math.divide(numer, denom)
-        );
+        const base_probability = math.divide(numer, denom);
 
         const result_probability = math.pow(base_probability, input_times);
+        const result_percentage = math.multiply(
+          result_probability,
+          math.bignumber(100)
+        );
         const result_times = math.log(result_probability, not_rick);
 
         const terget_probability = document.getElementById(
           "terget_probability"
         );
-        terget_probability.innerHTML = toPrecisionFixed(result_probability, 5);
+        terget_probability.innerHTML = `(${numer}/${denom})^${input_times}≈${toPrecisionFixed(
+          result_probability,
+          6
+        )} → ${toPrecisionFixed(result_percentage, 6)}%`;
         const terget_times = document.getElementById("terget_times");
-        terget_times.innerHTML = toPrecisionFixed(result_times, 5);
+        terget_times.innerHTML = `(5/6)^x=(${numer}/${denom})^${input_times} → x≈${toPrecisionFixed(
+          result_times,
+          6
+        )}`;
       };
 
       window.onload = OnButtonClick;
@@ -72,11 +74,11 @@
   <body>
     <main>
       <h1>実質リック計算ツール</h1>
-      <h2>出る確率</h2>
+      <h2>1回あたりの確率</h2>
       <table>
         <tr>
           <td>
-            <input id="input_numer" type="number" value="1" />
+            <input id="input_numer" type="number" value="3" />
             <hr
               style="
                 background-color: #000000;
@@ -88,12 +90,12 @@
           </td>
         </tr>
       </table>
-      <h2>出なかった回数</h2>
+      <h2>起きた回数</h2>
       <input id="input_times" type="number" type="number" value="28" />
       <button onclick="OnButtonClick();">計算</button>
       <br />
       <h2>結果</h2>
-      <h3>起きる確率</h3>
+      <h3>全体の確率</h3>
       <div id="terget_probability"></div>
       <h3>実質リック数</h3>
       <div id="terget_times"></div>
