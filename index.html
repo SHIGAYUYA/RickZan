@@ -21,8 +21,10 @@
       });
 
       // 1-1/6=5/6
-      const first_not_rick = math.divide(math.bignumber(5), math.bignumber(6));
-      const not_rick = math.divide(math.bignumber(4), math.bignumber(5));
+      const not_rick = math.divide(math.bignumber(5), math.bignumber(6));
+      const getBaseLog = (x, y) => {
+        return Math.log(y) / Math.log(x);
+      };
 
       const toPrecisionFixed = (value, precision) => {
         return math.format(
@@ -51,10 +53,7 @@
           result_probability,
           math.bignumber(100)
         );
-        const result_times = math.add(
-          math.log(math.divide(result_probability, first_not_rick), not_rick),
-          2
-        );
+        const result_times = math.log(result_probability, not_rick);
 
         const terget_probability = document.getElementById(
           "terget_probability"
@@ -64,7 +63,7 @@
           6
         )} → ${toPrecisionFixed(result_percentage, 6)}%`;
         const terget_times = document.getElementById("terget_times");
-        terget_times.innerHTML = `(5/6)*(4/5)^(x-2)=(${numer}/${denom})^${input_times} → x≈${toPrecisionFixed(
+        terget_times.innerHTML = `(5/6)^x=(${numer}/${denom})^${input_times} → x≈${toPrecisionFixed(
           result_times,
           6
         )}`;
